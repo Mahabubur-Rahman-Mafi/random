@@ -99,7 +99,7 @@ const Header = () => {
                       height="40px"
                       className="me-2"
                       roundedCircle
-                      alt=""git 
+                      alt=""
                     />
                   ) : (
                     <Image
