@@ -7,12 +7,14 @@ import { Toaster } from "react-hot-toast";
 import RightSide from "./Pages/Right/RightSide";
 import { Spinner } from "react-bootstrap";
 import Users from "./Pages/Users";
+import Error from "./Pages/Error/Error";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Primary></Primary>,
+      errorElement:<Error></Error>,
       children: [
         {
           path: "/",

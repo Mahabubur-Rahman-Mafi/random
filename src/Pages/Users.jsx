@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Button, Spinner, Table } from "react-bootstrap";
+import { Helmet } from "react-helmet";
 import toast from "react-hot-toast";
 
 const Users = () => {
@@ -55,50 +56,55 @@ const Users = () => {
   };
 
   return (
-    <div className="text-success py-3 text-center">
-      <p>
-        {users.length} {users.length <= 1 ? "person" : "people"} are using this
-        site
-      </p>
-      <Table striped bordered hover size="sm">
-        <thead>
-          <tr>
-            <th>Serial No</th>
-            <th>Name</th>
-            <th>Verify Data</th>
-            <th>Remove Data</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((u, idx) => (
+    <>
+      <Helmet>
+        <title>Admin | Random</title>
+      </Helmet>
+      <div className="text-success py-3 text-center">
+        <p>
+          {users.length} {users.length <= 1 ? "person" : "people"} are using
+          this site
+        </p>
+        <Table striped bordered hover size="sm">
+          <thead>
             <tr>
-              <td>{idx + 1}</td>
-              <td>{`${u.firstName} ${u.lastName}`}</td>
-              <td>
-                {!u.verify && (
-                  <Button
-                    className="w-100"
-                    onClick={() => handleVerify(u._id)}
-                    variant="success"
-                  >
-                    Verify
-                  </Button>
-                )}
-              </td>
-              <td>
-                <Button
-                  className=" w-100"
-                  variant="outline-danger"
-                  onClick={() => handleDelete(u._id)}
-                >
-                  Remove
-                </Button>
-              </td>
+              <th>Serial No</th>
+              <th>Name</th>
+              <th>Verify Data</th>
+              <th>Remove Data</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
-    </div>
+          </thead>
+          <tbody>
+            {users.map((u, idx) => (
+              <tr>
+                <td>{idx + 1}</td>
+                <td>{`${u.firstName} ${u.lastName}`}</td>
+                <td>
+                  {!u.verify && (
+                    <Button
+                      className="w-100"
+                      onClick={() => handleVerify(u._id)}
+                      variant="success"
+                    >
+                      Verify
+                    </Button>
+                  )}
+                </td>
+                <td>
+                  <Button
+                    className=" w-100"
+                    variant="outline-danger"
+                    onClick={() => handleDelete(u._id)}
+                  >
+                    Remove
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    </>
   );
 };
 
