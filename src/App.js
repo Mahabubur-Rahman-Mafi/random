@@ -1,11 +1,12 @@
-import logo from './logo.svg';
-import './App.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Primary from './Layout/Primary';
-import Home from './Pages/Home';
-import { Toaster } from 'react-hot-toast';
-import RightSide from './Pages/Right/RightSide';
-import { Spinner } from 'react-bootstrap';
+import logo from "./logo.svg";
+import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Primary from "./Layout/Primary";
+import Home from "./Pages/Home";
+import { Toaster } from "react-hot-toast";
+import RightSide from "./Pages/Right/RightSide";
+import { Spinner } from "react-bootstrap";
+import Users from "./Pages/Users";
 
 function App() {
   const router = createBrowserRouter([
@@ -20,19 +21,31 @@ function App() {
             {
               path: "/users/:id",
               element: <RightSide></RightSide>,
-              loader: ({ params }) => fetch(`http://localhost:5000/users/${params.id}`),
+              loader: ({ params }) =>
+                fetch(
+                  `https://random-server-one.vercel.app/users/${params.id}`
+                ),
             },
           ],
+        },
+        {
+          path: "/users",
+          element: <Users></Users>
         },
       ],
     },
   ]);
   return (
     <>
-      <RouterProvider router={router} fallbackElement={
-        <Spinner></Spinner>
-      } />
-      <Toaster/>
+      <RouterProvider
+        router={router}
+        fallbackElement={
+          <div className="text-center py-3">
+            <Spinner></Spinner>
+          </div>
+        }
+      />
+      <Toaster />
     </>
   );
 }

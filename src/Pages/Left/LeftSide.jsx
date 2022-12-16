@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button, Image, Modal } from "react-bootstrap";
+import { FaCheck } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import img from "../../assets/user.png";
 
 const LeftSide = ({ u }) => {
-  const { _id, avatar, Bio, jobTitle, username, firstName, lastName, email } =
+  const { _id, avatar, Bio, jobTitle, username, firstName, lastName, email, verify } =
     u;
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -18,7 +19,7 @@ const LeftSide = ({ u }) => {
   };
 
   return (
-    <>
+      <>
       <Link to={`/users/${u._id}`}>
         <Button
           className="w-100"
@@ -44,17 +45,22 @@ const LeftSide = ({ u }) => {
                 className="me-2"
               />
             )}
-            <h6 className="fw-semibold p-0 m-0">{`${firstName} ${lastName}`}</h6>
+            <h6 className="fw-semibold p-0 m-0 me-3">{`${firstName} ${lastName}`}</h6>
+            {verify && (
+              <FaCheck className="fw-bold fs-5"/>
+            )}
           </div>
         </Button>
       </Link>
+
+      {/* modal start */}
       {window.innerWidth <= 768 && (
         <Modal
           show={show}
           onHide={handleClose}
           size="md"
-                  aria-labelledby="contained-modal-title-vcenter"
-                  className="d-block d-md-none"
+          aria-labelledby="contained-modal-title-vcenter"
+          className="d-block d-md-none"
           centered
         >
           <Modal.Header closeButton>

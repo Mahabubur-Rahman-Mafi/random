@@ -42,11 +42,7 @@ const { _id, avatar, Bio, jobTitle, username, firstName, lastName, email, verify
       <h5>
         <span className="fw-bold text-dark">Job Title:</span> {jobTitle}
       </h5>
-      {verify && (
-        <h2>
-          <span className="fw-bold text-dark">Verify:</span> {jobTitle}{" "}
-        </h2>
-      )}
+      {verify && <span className="fw-bold text-info fs-5 ">Authenticated User Info</span>}
     </div>
   );
 };

@@ -1,6 +1,17 @@
 import { GoogleAuthProvider } from "firebase/auth";
 import React, { useContext, useState } from "react";
-import { Button, Container, Form, Image, Modal, Nav, Navbar } from "react-bootstrap";
+import {
+  Alert,
+  Button,
+  Container,
+  Form,
+  Image,
+  Modal,
+  Nav,
+  Navbar,
+  NavLink,
+  Toast,
+} from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,11 +19,13 @@ import logo from "../assets/logo.png";
 import { AuthContext } from "../Auth/AuthProvider";
 import useAdmin from "../Hook/useAdmin";
 import { FaUserCircle, IconName } from "react-icons/fa";
-import userPhoto from '../assets/user.png'
+import userPhoto from "../assets/user.png";
 
 const Header = () => {
-  const { user, googleAuthProvider, logOutUser } = useContext(AuthContext);
+  const { user, googleAuthProvider, logOutUser, userLogIn, createUser } =
+    useContext(AuthContext);
   const [Logshow, setLogShow] = useState(false);
+  const [e, setE] = useState("");
   const [signInShow, setSignInShow] = useState(false);
   const handleLogClose = () => setLogShow(false);
   const handleLogShow = () => setLogShow(true);
@@ -26,18 +39,37 @@ const Header = () => {
     handleSubmit,
     watch,
     formState: { errors },
+    reset,
   } = useForm();
 
   // log in submit
   const onLogSubmit = (d) => {
-    console.log("log", d);
-    handleLogClose();
+     setE("");
+    userLogIn(d.email, d.password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        toast.success("Sign In Successfully");
+        handleLogClose();
+        reset();
+         setE("");
+      })
+      .catch((e) => setE(e.message));
   };
 
   // sign up here
   const onSignUpSubmit = (d) => {
-    handleSingInClose();
-    console.log("sign", d);
+     setE("");
+    createUser(d.email, d.password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        toast.success("Sign Up Successfully");
+        handleSingInClose();
+        reset();
+         setE("");
+      })
+      .catch((e) => setE(e.message));
   };
 
   // switch log in
@@ -56,11 +88,12 @@ const Header = () => {
     logOutUser();
     navigate("/")
       .then()
-      .catch((e) => console.log(e));
+      .catch((e) => setE(e.message));
   };
 
   // log in google
   const handleGoogle = () => {
+    setE("");
     googleAuthProvider(googleProvider)
       .then((result) => {
         const user = result.user;
@@ -69,7 +102,7 @@ const Header = () => {
         handleSingInClose();
         handleLogClose();
       })
-      .catch((e) => console.log(e));
+      .catch((e) => setE(e.message));
   };
   return (
     <>
@@ -89,7 +122,8 @@ const Header = () => {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
+            <Nav className="mx-auto"></Nav>
+            <Nav>
               {user?.uid ? (
                 <>
                   {user?.photoURL ? (
@@ -174,6 +208,8 @@ const Header = () => {
                 autoFocus
               />
             </Form.Group>
+            <p className="text-danger">{e}</p>
+
             <p>
               Already Have an account?{" "}
               <Button
@@ -230,6 +266,7 @@ const Header = () => {
                 autoFocus
               />
             </Form.Group>
+            <p className="text-danger">{e}</p>
             <p>
               Don't Have an account?{" "}
               <Button
